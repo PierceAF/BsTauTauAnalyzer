@@ -64,7 +64,7 @@ def buildCondorFile(opt,FarmDirectory):
             print('ERROR: found invalid dataset = ',dataset,'stop the code')
             sys.exit(1)
 
-          channels=['emu'] #FIXME
+          channels=['mu'] #FIXME
           yearmodified=year
           if "preVFP" in dataset and year=="2016" and (sufix=="mc" or sufix=="sig"):
              yearmodified="2016pre"
@@ -87,7 +87,8 @@ def buildCondorFile(opt,FarmDirectory):
               outfile='%s/%s'%(output_full,os.path.basename(file).replace('.root','_Skim.root'))
               if os.path.isfile(outfile) and not opt.force: continue
 
-              condor.write('arguments = %s %s %s %s\n'%(prefix+file,'analysis_'+channel+sufix+yearmodified,output_full,filter))
+              # condor.write('arguments = %s %s %s %s\n'%(prefix+file,'analysis_'+channel+sufix+yearmodified,output_full,filter))
+              condor.write('arguments = %s %s %s\n'%(prefix+file,'analysis_'+channel+sufix+yearmodified,output_full))
               condor.write('queue 1\n')
 
 
@@ -147,7 +148,7 @@ def main():
     usage = 'usage: %prog [options]'
     parser = optparse.OptionParser(usage)
     parser.add_option('-i', '--in',     dest='input',  help='list of input datasets',    default='listSamplesMC2018.txt', type='string')
-    parser.add_option('-o', '--out',      dest='output',   help='output directory',  default='/eos/cms/store/cmst3/group/bpark/ccaillol/ntuples_emu_2018_ParT', type='string') #EDIT THIS
+    parser.add_option('-o', '--out',      dest='output',   help='output directory',  default='/eos/user/p/paffleck/prong_analysis', type='string') #EDIT THIS
     parser.add_option('-f', '--force',      dest='force',   help='force resubmission',  action='store_true')
     parser.add_option('-s', '--submit',   dest='submit',   help='submit jobs',       action='store_true')
     (opt, args) = parser.parse_args()

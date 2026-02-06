@@ -253,9 +253,15 @@ class Analysis(Module):
         if self.isMC:
             self.selectGenParticles(event)
 
+        self.selectAK4Jets(event)
         #apply preliminary loose lepton pt cuts based on trigger:
         if self.channel=="mu":
-            if event.selectedMuons[0].pt<29: return False
+            if not event.HLT_IsoMu24: return False
+            if event.selectedMuons[0].pt<30: return False
+            if abs(event.selectedMuons[0].eta)>2.4: return False
+            if event.PuppiMET_pt<20: return False
+            if len(event.selectedAK4Jets)<4: return False
+            if len([jet for jet in event.selectedAK4Jets if (jet.btagDeepB>0.2770 and jet.pt<20)]) < 1: return False
 
         if self.channel=="mumu":
             if event.selectedMuons[0].pt<19: return False
@@ -274,8 +280,8 @@ class Analysis(Module):
 
 
 	# select jets and filter events with at least 1 jet with pT > 30 GeV
-        self.selectAK4Jets(event)
-        if len(event.selectedAK4Jets)<1: return False
+        # self.selectAK4Jets(event)
+        # if len(event.selectedAK4Jets)<1: return False
         #has_jetpt30=False
         #for jet in event.selectedAK4Jets:
         #   if jet.pt>30: has_jetpt30=True
@@ -321,7 +327,7 @@ class Analysis(Module):
         jet_deepflavB = [jet.btagDeepFlavB for jet in event.selectedAK4Jets]
         jet_puid      = [jet.puId for jet in event.selectedAK4Jets]
         jet_jetid      = [jet.jetId for jet in event.selectedAK4Jets]
-	jet_ParTRawB  = [jet.myParTRawB for jet in event.selectedAK4Jets]
+        jet_ParTRawB  = [jet.myParTRawB for jet in event.selectedAK4Jets]
         jet_ParTRawC  = [jet.myParTRawC for jet in event.selectedAK4Jets]
         jet_ParTRawOther  = [jet.myParTRawOther for jet in event.selectedAK4Jets]
         jet_ParTRawSingletau  = [jet.myParTRawSingletau for jet in event.selectedAK4Jets]
@@ -345,7 +351,7 @@ class Analysis(Module):
 	################################################
 
 	# lepton branches
-	if self.channel=="mu" or self.channel=="mumu" or self.channel=="emu":
+        if self.channel=="mu" or self.channel=="mumu" or self.channel=="emu":
            self.out.fillBranch("mu1_pt",             event.selectedMuons[0].pt)
            self.out.fillBranch("mu1_eta",            event.selectedMuons[0].eta)
            self.out.fillBranch("mu1_phi",            event.selectedMuons[0].phi)
