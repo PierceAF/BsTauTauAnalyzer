@@ -49,5 +49,5 @@ keep Tau*
 keep Jet*
 keep PV_*
 keep TrigObj*
-
+keep BsTau*
 keep L1PreFiringWeight*

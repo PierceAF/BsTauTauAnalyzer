@@ -51,4 +51,6 @@ keep *GenCand*
 
 keep puWeight*
 
+keep BsTau*
+
 keep L1PreFiringWeight*
