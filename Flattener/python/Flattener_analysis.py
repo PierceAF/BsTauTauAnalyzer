@@ -88,6 +88,7 @@ class Analysis(Module):
            self.out.branch("e2_cutbased",           "I");
 
         self.out.branch("nj",             "I");
+        self.out.branch("nbj",             "I");
         self.out.branch("j_pt",        "F",  lenVar = "nj");
         self.out.branch("j_eta",       "F",  lenVar = "nj");
         self.out.branch("j_phi",       "F",  lenVar = "nj");

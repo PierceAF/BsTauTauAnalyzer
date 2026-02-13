@@ -65,6 +65,7 @@ def buildCondorFile(opt,FarmDirectory):
             sys.exit(1)
 
           channels=['mu'] #FIXME
+          year = '2018'
           yearmodified=year
           if "preVFP" in dataset and year=="2016" and (sufix=="mc" or sufix=="sig"):
              yearmodified="2016pre"
