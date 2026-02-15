@@ -52,7 +52,7 @@ Edit EraConfig.py:
 Choose the list of files you want to run over in the command below (see lists of data and MC samples in BsTauTauAnalyzer/Flattener/data/).
 
 ```
-voms-proxy-init --voms cms --valid 72:00 --out /path/to/FarmLocalNtuple/myproxy509
+voms-proxy-init --voms cms --valid 72:00 --out $CMSSW_BASE/src/FarmLocalNtuple/myproxy509
 python $CMSSW_BASE/src/BsTauTauAnalyzer/Flattener/scripts/runNtuplizer.py --in $CMSSW_BASE/src/BsTauTauAnalyzer/Flattener/data/NanoAODMC2018.txt
 ```
 

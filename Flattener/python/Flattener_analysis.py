@@ -398,6 +398,7 @@ class Analysis(Module):
 
 	# jet branches
         self.out.fillBranch("nj" ,             len(event.selectedAK4Jets))
+        self.out.fillBranch("nbj" ,            len([jet for jet in event.selectedAK4Jets if jet.btagDeepFlavB>0.049])) # loose WP
         self.out.fillBranch("j_pt",            jet_pt);
         self.out.fillBranch("j_eta",           jet_eta);
         self.out.fillBranch("j_phi",           jet_phi);
