@@ -1,5 +1,5 @@
 /eos/cms/store/group/phys_bphys/ytakahas/bstautau/nano_with_part_2026Jan27/bstautau_106X/ttbarToBsToTauTau_BsFilter_TauTauFilter_TuneCP5_13TeV-pythia8-evtgen/crab_bstautau/260127_163040/0000
-/eos/cms/store/group/phys_bphys/ytakahas/bstautau/nano_with_part_2026Jan27/bstautau_new_106X/TTToBsToTauTau_TuneCP5_13TeV-pythia8-evtgen/crab_bstautau_new/260127_163058/0000
+/eos/cms/store/group/phys_bphys/ytakahas/bstautau/nano_with_part_2026Jan27/bstautau_new_106X/TTToBsToTauTau_TuneCP5_13TeV-pythia8-evtgen/crab_bstautau_new/260127_163058/0000/
 /eos/cms/store/group/phys_bphys/ytakahas/bstautau/nano_with_part_2026Jan27/tt_fullylep_106X/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/crab_tt_fullylep/260127_163002/0000
 /eos/cms/store/group/phys_bphys/ytakahas/bstautau/nano_with_part_2026Jan27/tt_fullylep_106X/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/crab_tt_fullylep/260127_163002/0001
 /eos/cms/store/group/phys_bphys/ytakahas/bstautau/nano_with_part_2026Jan27/tt_had_106X/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/crab_tt_had/260127_163020/0000
