@@ -28,8 +28,8 @@ keep HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
 
 keep Pileup_nTrueInt*
 keep genWeight*
-keep fixedGridRhoFastjetAll
-keep Generator*
+#keep fixedGridRhoFastjetAll
+#keep Generator*
 keep btagWeight_DeepCSVB*
 keep LHE_Vpt*
 keep LHE_Njets*
@@ -37,15 +37,15 @@ keep *LHEScale*
 keep *LHEPdf*
 keep nPSWeight
 keep PSWeight*
-keep *GenPart*
+#keep *GenPart*
 
 
 #keep objects
-keep MET_p*
-keep PuppiMET_p*
+#keep MET_p*
+#keep PuppiMET_p*
 keep Muon*
 keep Electron*
-keep Tau*
+#keep Tau*
 keep Jet*
 keep PV_*
 keep TrigObj*

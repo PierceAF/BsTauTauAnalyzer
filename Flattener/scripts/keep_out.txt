@@ -6,13 +6,13 @@ keep run*
 keep event*
 keep luminosityBlock*
 keep genWeight*
-keep fixedGridRhoFastjetAll
-keep Generator*
+#keep fixedGridRhoFastjetAll
+#keep Generator*
 
 #keep nanoAOD content
 keep Pileup_nTrueInt
-keep MET_p*
-keep PuppiMET_p*
+#keep MET_p*
+#keep PuppiMET_p*
 
 keep HLT_IsoMu24
 keep HLT_IsoTkMu24
@@ -45,9 +45,10 @@ keep mu1*
 keep mu2*
 keep j_*
 keep nj
-keep tau_*
-keep ntau
-keep *GenCand*
+keep nbj
+#keep tau_*
+#keep ntau
+#keep *GenCand*
 
 keep puWeight*
 

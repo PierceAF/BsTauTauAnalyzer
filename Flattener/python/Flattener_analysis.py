@@ -46,8 +46,8 @@ class Analysis(Module):
            self.out.branch("mu1_pt",            "F");
            self.out.branch("mu1_eta",           "F");
            self.out.branch("mu1_phi",           "F");
-           self.out.branch("mu1_dxy",            "F");
-           self.out.branch("mu1_dz",           "F");
+#           self.out.branch("mu1_dxy",            "F");
+#           self.out.branch("mu1_dz",           "F");
            self.out.branch("mu1_charge",           "F");
            self.out.branch("mu1_tightId",           "I");
            self.out.branch("mu1_iso",           "F");
@@ -59,8 +59,8 @@ class Analysis(Module):
            self.out.branch("mu2_pt",            "F");
            self.out.branch("mu2_eta",           "F");
            self.out.branch("mu2_phi",           "F");
-           self.out.branch("mu2_dxy",            "F");
-           self.out.branch("mu2_dz",           "F");
+#           self.out.branch("mu2_dxy",            "F");
+#           self.out.branch("mu2_dz",           "F");
            self.out.branch("mu2_charge",           "F");
            self.out.branch("mu2_tightId",           "I");
            self.out.branch("mu2_iso",           "F");
@@ -73,8 +73,8 @@ class Analysis(Module):
            self.out.branch("e1_pt",            "F");
            self.out.branch("e1_eta",           "F");
            self.out.branch("e1_phi",           "F");
-           self.out.branch("e1_dxy",            "F");
-           self.out.branch("e1_dz",           "F");
+#           self.out.branch("e1_dxy",            "F");
+#           self.out.branch("e1_dz",           "F");
            self.out.branch("e1_charge",           "F");
            self.out.branch("e1_cutbased",           "I");
 
@@ -82,8 +82,8 @@ class Analysis(Module):
            self.out.branch("e2_pt",            "F");
            self.out.branch("e2_eta",           "F");
            self.out.branch("e2_phi",           "F");
-           self.out.branch("e2_dxy",            "F");
-           self.out.branch("e2_dz",           "F");
+#           self.out.branch("e2_dxy",            "F");
+#           self.out.branch("e2_dz",           "F");
            self.out.branch("e2_charge",           "F");
            self.out.branch("e2_cutbased",           "I");
 
@@ -105,18 +105,18 @@ class Analysis(Module):
         self.out.branch("j_deepflavB", "F",  lenVar = "nj");
         self.out.branch("j_hadronFlavour", "I",  lenVar = "nj");
 
-        self.out.branch("ntau",             "I");
-        self.out.branch("tau_pt",        "F",  lenVar = "ntau");
-        self.out.branch("tau_eta",       "F",  lenVar = "ntau");
-        self.out.branch("tau_phi",       "F",  lenVar = "ntau");
-        self.out.branch("tau_charge",        "I",  lenVar = "ntau");
+#        self.out.branch("ntau",             "I");
+#        self.out.branch("tau_pt",        "F",  lenVar = "ntau");
+#        self.out.branch("tau_eta",       "F",  lenVar = "ntau");
+#        self.out.branch("tau_phi",       "F",  lenVar = "ntau");
+#        self.out.branch("tau_charge",        "I",  lenVar = "ntau");
 
-        self.out.branch("nGenCand",              "I");
-        self.out.branch("GenCand_id",            "I",  lenVar = "nGenCand");
-        self.out.branch("GenCand_pt",            "F",  lenVar = "nGenCand");
-        self.out.branch("GenCand_eta",           "F",  lenVar = "nGenCand");
-        self.out.branch("GenCand_phi",           "F",  lenVar = "nGenCand");
-        self.out.branch("GenCand_isBsTauTau",            "I",  lenVar = "nGenCand");
+#        self.out.branch("nGenCand",              "I");
+#        self.out.branch("GenCand_id",            "I",  lenVar = "nGenCand");
+#        self.out.branch("GenCand_pt",            "F",  lenVar = "nGenCand");
+#        self.out.branch("GenCand_eta",           "F",  lenVar = "nGenCand");
+#        self.out.branch("GenCand_phi",           "F",  lenVar = "nGenCand");
+#        self.out.branch("GenCand_isBsTauTau",            "I",  lenVar = "nGenCand");
 
     def endFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         pass
@@ -180,8 +180,10 @@ class Analysis(Module):
         event.selectedAK4Jets = []
         ak4jets = Collection(event, "Jet")
         for j in ak4jets:
-            #if j.pt<30 :
-            #    continue
+            
+#            print ('jet pt', j.pt)
+
+            if j.pt<20: continue
             if abs(j.eta) > 2.5:
                 continue
 
@@ -226,7 +228,7 @@ class Analysis(Module):
         #initiate object selector tools:
         elSel = ElectronSelector()
         muSel = MuonSelector()
-        tauSel = TauSelector()
+#        tauSel = TauSelector()
 
         # apply object selection and make channels exclusive based on number of leptons
         self.selectMuons(event, muSel)
@@ -245,29 +247,24 @@ class Analysis(Module):
         if self.channel=="ee":
             if len(event.selectedElectrons)!=2: return False
 
-        self.selectTaus(event, tauSel)
+#        self.selectTaus(event, tauSel)
 
 	## select trigger objects to do trigger matching
         #self.selectTriggerObjects(event)
 
 	# select gen particles in simulation
-        if self.isMC:
-            self.selectGenParticles(event)
+#        if self.isMC:
+#            self.selectGenParticles(event)
 
-        self.selectAK4Jets(event)
         #apply preliminary loose lepton pt cuts based on trigger:
         if self.channel=="mu":
             if not event.HLT_IsoMu24: return False
-            if event.selectedMuons[0].pt<30: return False
-            if abs(event.selectedMuons[0].eta)>2.4: return False
-            if event.PuppiMET_pt<20: return False
-            if len(event.selectedAK4Jets)<4: return False
-            if len([jet for jet in event.selectedAK4Jets if (jet.btagDeepB>0.2770 and jet.pt<20)]) < 1: return False
+            if event.selectedMuons[0].pt<29: return False
 
         if self.channel=="mumu":
             if event.selectedMuons[0].pt<19: return False
             if event.selectedMuons[1].pt<14: return False
-
+            
         if self.channel=="e":
             if event.selectedElectrons[0].pt<29: return False
 
@@ -281,8 +278,8 @@ class Analysis(Module):
 
 
 	# select jets and filter events with at least 1 jet with pT > 30 GeV
-        # self.selectAK4Jets(event)
-        # if len(event.selectedAK4Jets)<1: return False
+        self.selectAK4Jets(event)
+        if len(event.selectedAK4Jets)<1: return False
         #has_jetpt30=False
         #for jet in event.selectedAK4Jets:
         #   if jet.pt>30: has_jetpt30=True
@@ -292,34 +289,34 @@ class Analysis(Module):
       	###############  GEN-LEVEL ANALYSIS ##################
       	######################################################
 
-        event.genCand=[]
+#        event.genCand=[]
         event.genIdx=[]
 
-        idx=0
-        if self.isMC:
-            for genp in event.selectedGenParticles:
-                if (abs(genp.pdgId)==531 or abs(genp.pdgId)==15 or abs(genp.pdgId)==13 or abs(genp.pdgId)==11 or abs(genp.pdgId)==6 or abs(genp.pdgId)==24 or abs(genp.pdgId)==23):
-                    event.genCand.append(genp)
-                    event.genIdx.append(idx)
-                idx=idx+1
+#        idx=0
+#        if self.isMC:
+#            for genp in event.selectedGenParticles:
+#                if (abs(genp.pdgId)==531 or abs(genp.pdgId)==15 or abs(genp.pdgId)==13 or abs(genp.pdgId)==11 or abs(genp.pdgId)==6 or abs(genp.pdgId)==24 or abs(genp.pdgId)==23):
+#                    event.genCand.append(genp)
+#                    event.genIdx.append(idx)
+#                idx=idx+1
 
 
         ######################################################
         ##### HIGH LEVEL VARIABLES FOR SELECTED EVENTS   #####
         ######################################################
         
-        gen_id     = [genp.pdgId for genp in event.genCand]
-        gen_pt     = [genp.pt for genp in event.genCand]
-        gen_eta    = [genp.eta for genp in event.genCand]
-        gen_phi    = [genp.phi for genp in event.genCand]
-        gen_isbstt = []
-        for k in range(0,len(gen_pt)):
-           is_bstt=0
-           if abs(gen_id[k])==531:
-              for genp in event.selectedGenParticles:
-                 if (abs(genp.pdgId)==15 and (abs(event.selectedGenParticles[genp.genPartIdxMother].pdgId)==531 or abs(event.selectedGenParticles[event.selectedGenParticles[genp.genPartIdxMother].genPartIdxMother].pdgId)==531) and (genp.genPartIdxMother==event.genIdx[k] or event.selectedGenParticles[genp.genPartIdxMother].genPartIdxMother==event.genIdx[k])):
-		    is_bstt=1
-           gen_isbstt.append(is_bstt)
+#        gen_id     = [genp.pdgId for genp in event.genCand]
+#        gen_pt     = [genp.pt for genp in event.genCand]
+#        gen_eta    = [genp.eta for genp in event.genCand]
+#        gen_phi    = [genp.phi for genp in event.genCand]
+#        gen_isbstt = []
+#        for k in range(0,len(gen_pt)):
+#           is_bstt=0
+#           if abs(gen_id[k])==531:
+#              for genp in event.selectedGenParticles:
+#                 if (abs(genp.pdgId)==15 and (abs(event.selectedGenParticles[genp.genPartIdxMother].pdgId)==531 or abs(event.selectedGenParticles[event.selectedGenParticles[genp.genPartIdxMother].genPartIdxMother].pdgId)==531) and (genp.genPartIdxMother==event.genIdx[k] or event.selectedGenParticles[genp.genPartIdxMother].genPartIdxMother==event.genIdx[k])):
+#		    is_bstt=1
+#           gen_isbstt.append(is_bstt)
 
         jet_pt     = [jet.pt for jet in event.selectedAK4Jets]
         jet_eta    = [jet.eta for jet in event.selectedAK4Jets]
@@ -328,7 +325,7 @@ class Analysis(Module):
         jet_deepflavB = [jet.btagDeepFlavB for jet in event.selectedAK4Jets]
         jet_puid      = [jet.puId for jet in event.selectedAK4Jets]
         jet_jetid      = [jet.jetId for jet in event.selectedAK4Jets]
-        jet_ParTRawB  = [jet.myParTRawB for jet in event.selectedAK4Jets]
+	jet_ParTRawB  = [jet.myParTRawB for jet in event.selectedAK4Jets]
         jet_ParTRawC  = [jet.myParTRawC for jet in event.selectedAK4Jets]
         jet_ParTRawOther  = [jet.myParTRawOther for jet in event.selectedAK4Jets]
         jet_ParTRawSingletau  = [jet.myParTRawSingletau for jet in event.selectedAK4Jets]
@@ -342,22 +339,22 @@ class Analysis(Module):
            else:
                 jet_hadronflavour.append(-1)
 
-        tau_pt     = [tau.pt for tau in event.selectedTaus]
-        tau_eta    = [tau.eta for tau in event.selectedTaus]
-        tau_phi    = [tau.phi for tau in event.selectedTaus]
-        tau_charge = [tau.charge for tau in event.selectedTaus]
+#        tau_pt     = [tau.pt for tau in event.selectedTaus]
+#        tau_eta    = [tau.eta for tau in event.selectedTaus]
+#        tau_phi    = [tau.phi for tau in event.selectedTaus]
+#        tau_charge = [tau.charge for tau in event.selectedTaus]
 
 	################################################
         ######### store branches #######################
 	################################################
 
 	# lepton branches
-        if self.channel=="mu" or self.channel=="mumu" or self.channel=="emu":
+	if self.channel=="mu" or self.channel=="mumu" or self.channel=="emu":
            self.out.fillBranch("mu1_pt",             event.selectedMuons[0].pt)
            self.out.fillBranch("mu1_eta",            event.selectedMuons[0].eta)
            self.out.fillBranch("mu1_phi",            event.selectedMuons[0].phi)
-           self.out.fillBranch("mu1_dxy",            event.selectedMuons[0].dxy)
-           self.out.fillBranch("mu1_dz",             event.selectedMuons[0].dz)
+#           self.out.fillBranch("mu1_dxy",            event.selectedMuons[0].dxy)
+#           self.out.fillBranch("mu1_dz",             event.selectedMuons[0].dz)
            self.out.fillBranch("mu1_charge",         event.selectedMuons[0].charge)
            self.out.fillBranch("mu1_tightId",         event.selectedMuons[0].tightId)
            self.out.fillBranch("mu1_iso",         event.selectedMuons[0].pfRelIso04_all)
@@ -369,8 +366,8 @@ class Analysis(Module):
            self.out.fillBranch("mu2_pt",             event.selectedMuons[1].pt)
            self.out.fillBranch("mu2_eta",            event.selectedMuons[1].eta)
            self.out.fillBranch("mu2_phi",            event.selectedMuons[1].phi)
-           self.out.fillBranch("mu2_dxy",            event.selectedMuons[1].dxy)
-           self.out.fillBranch("mu2_dz",             event.selectedMuons[1].dz)
+#           self.out.fillBranch("mu2_dxy",            event.selectedMuons[1].dxy)
+#           self.out.fillBranch("mu2_dz",             event.selectedMuons[1].dz)
            self.out.fillBranch("mu2_charge",         event.selectedMuons[1].charge)
            self.out.fillBranch("mu2_tightId",        event.selectedMuons[1].tightId)
            self.out.fillBranch("mu2_iso",            event.selectedMuons[1].pfRelIso04_all)
@@ -382,8 +379,8 @@ class Analysis(Module):
            self.out.fillBranch("e1_pt",        event.selectedElectrons[0].pt)
            self.out.fillBranch("e1_eta",       event.selectedElectrons[0].eta)
            self.out.fillBranch("e1_phi",       event.selectedElectrons[0].phi)
-           self.out.fillBranch("e1_dxy",       event.selectedElectrons[0].dxy)
-           self.out.fillBranch("e1_dz",        event.selectedElectrons[0].dz)
+#           self.out.fillBranch("e1_dxy",       event.selectedElectrons[0].dxy)
+#           self.out.fillBranch("e1_dz",        event.selectedElectrons[0].dz)
            self.out.fillBranch("e1_charge",    event.selectedElectrons[0].charge)
            self.out.fillBranch("e1_cutbased",  event.selectedElectrons[0].cutBased)
 
@@ -391,14 +388,16 @@ class Analysis(Module):
            self.out.fillBranch("e2_pt",         event.selectedElectrons[1].pt)
            self.out.fillBranch("e2_eta",        event.selectedElectrons[1].eta)
            self.out.fillBranch("e2_phi",        event.selectedElectrons[1].phi)
-           self.out.fillBranch("e2_dxy",        event.selectedElectrons[0].dxy)
-           self.out.fillBranch("e2_dz",         event.selectedElectrons[1].dz)
+#           self.out.fillBranch("e2_dxy",        event.selectedElectrons[1].dxy)
+#           self.out.fillBranch("e2_dz",         event.selectedElectrons[1].dz)
            self.out.fillBranch("e2_charge",     event.selectedElectrons[1].charge)
            self.out.fillBranch("e2_cutbased",   event.selectedElectrons[1].cutBased)
 
 	# jet branches
+
+        jet_deepflavB_count = [jet.btagDeepFlavB for jet in event.selectedAK4Jets if jet.btagDeepFlavB > 0.0494]
+        self.out.fillBranch("nbj" ,             len(jet_deepflavB_count))
         self.out.fillBranch("nj" ,             len(event.selectedAK4Jets))
-        self.out.fillBranch("nbj" ,            len([jet for jet in event.selectedAK4Jets if jet.btagDeepFlavB>0.049])) # loose WP
         self.out.fillBranch("j_pt",            jet_pt);
         self.out.fillBranch("j_eta",           jet_eta);
         self.out.fillBranch("j_phi",           jet_phi);
@@ -416,21 +415,21 @@ class Analysis(Module):
         self.out.fillBranch("j_ParTRawTauhtaumu",         jet_ParTRawTauhtaumu);
 
         # jet branches
-        self.out.fillBranch("ntau" ,          len(event.selectedTaus))
-        self.out.fillBranch("tau_pt",         tau_pt);
-        self.out.fillBranch("tau_eta",        tau_eta);
-        self.out.fillBranch("tau_phi",        tau_phi);
-        self.out.fillBranch("tau_charge",     tau_charge);
+#        self.out.fillBranch("ntau" ,          len(event.selectedTaus))
+#        self.out.fillBranch("tau_pt",         tau_pt);
+#        self.out.fillBranch("tau_eta",        tau_eta);
+#        self.out.fillBranch("tau_phi",        tau_phi);
+#        self.out.fillBranch("tau_charge",     tau_charge);
 
 
         # GEN branches 
-        if self.isMC:
-            self.out.fillBranch("nGenCand",           len(event.genCand))
-            self.out.fillBranch("GenCand_id" ,        gen_id)
-            self.out.fillBranch("GenCand_pt" ,        gen_pt)
-            self.out.fillBranch("GenCand_eta" ,       gen_eta)
-            self.out.fillBranch("GenCand_phi" ,       gen_phi)
-            self.out.fillBranch("GenCand_isBsTauTau" ,        gen_isbstt)
+#        if self.isMC:
+#            self.out.fillBranch("nGenCand",           len(event.genCand))
+#            self.out.fillBranch("GenCand_id" ,        gen_id)
+#            self.out.fillBranch("GenCand_pt" ,        gen_pt)
+#            self.out.fillBranch("GenCand_eta" ,       gen_eta)
+#            self.out.fillBranch("GenCand_phi" ,       gen_phi)
+#            self.out.fillBranch("GenCand_isBsTauTau" ,        gen_isbstt)
 
         return True
 
