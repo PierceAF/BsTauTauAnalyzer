@@ -1,7 +1,8 @@
 # BsTauTau-NanoAODSkimmer
 
-Input files created by [NanoAOD producer](https://github.com/PierceAF/BsTauTau-Producer/tree/3-prong).
-Output files for use with [BsTauTau-TauRecon](https://github.com/PierceAF/BsTauTau-TauRecon)
+Input files created by [NanoAOD-Producer](https://github.com/PierceAF/BsTauTau-Producer/tree/3-prong).
+
+Output files for use with [BsTauTau-TauRecon](https://github.com/PierceAF/BsTauTau-TauRecon).
 
 
 ## Setup
@@ -53,14 +54,16 @@ Edit runNtuplizer.py with (or add arguments to the command below):
 Edit EraConfig.py:
  * comment or uncomment the last lines depending on whether you are running on MC or data (different json and trigger conditions)
 
+Load voms
 ```
 voms-proxy-init --voms cms --valid 72:00 --out $CMSSW_BASE/src/BsTauTauAnalyzer/FarmLocalNtuple/myproxy509
 ```
 
-Choose the list of files you want to run over in the command below (see lists of data and MC samples in BsTauTauAnalyzer/Flattener/data/).
+In `BsTauTauAnalyzer/Flattener/data/`, choose from the list of files or create a list with `command.sh` to run over in the command below 
+
 
 ```
 python $CMSSW_BASE/src/BsTauTauAnalyzer/Flattener/scripts/runNtuplizer.py --in $CMSSW_BASE/src/BsTauTauAnalyzer/Flattener/data/NanoAODMC2018.txt
 ```
 
-Follow the instructions printed by the above command to submit jobs. Don't forget the voms part. 
+Follow the instructions printed by the above command to submit jobs.

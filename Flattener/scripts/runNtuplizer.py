@@ -2,7 +2,6 @@
 import os
 import sys
 import optparse
-import shutil
 import random
 import glob
 from BsTauTauAnalyzer.Flattener.EraConfig import *
@@ -32,8 +31,6 @@ def buildCondorFile(opt,FarmDirectory):
             OpSysAndVer = "SLCern6"
         else:
             OpSysAndVer = "CentOS7"
-        #condor.write('requirements = (OpSysAndVer =?= "{0}")\n\n'.format(OpSysAndVer))
-        #condor.write('MY.WantOS = "el7"\n')
         condor.write('MY.SingularityImage = "/cvmfs/unpacked.cern.ch/gitlab-registry.cern.ch/cms-cat/cmssw-lxplus/cmssw-el7-lxplus:latest/"\n')
         condor.write('should_transfer_files = YES\n')
         condor.write('transfer_input_files = %s\n\n'%os.environ['X509_USER_PROXY'])
@@ -55,18 +52,16 @@ def buildCondorFile(opt,FarmDirectory):
           elif 'eos' in dataset.split('/'):
             sufix='mc' 
             dataset_name = dataset.split('/')[12]+"_"+dataset.split('/')[-1]
-	    if "SingleMu" in dataset_name or "doublemu" in dataset_name or "muonEG" in dataset_name or "egamma" in dataset_name:
-	       sufix='data'
-	       year="2018"
+            if "SingleMu" in dataset or "doublemu" in dataset or "muonEG" in dataset or "egamma" in dataset:
+               sufix='data'
+               year="2018"
             file_list=glob.glob(dataset+'/*.root')
-            print dataset_name,sufix,year
+            print(dataset_name,sufix,year)
           else:
             print('ERROR: found invalid dataset = ',dataset,'stop the code')
             sys.exit(1)
 
           channels=['mu'] #FIXME
-          year='2018'
-          sufix='mc'
 
           yearmodified=year
           if "preVFP" in dataset and year=="2016" and (sufix=="mc" or sufix=="sig"):
@@ -80,17 +75,12 @@ def buildCondorFile(opt,FarmDirectory):
 			
           for channel in channels:
             output_full=output+"_"+channel
-            # apply filter to data: trigger and GRL
-            filter=ANALYSISCUT[year][channel]
-	    print year
-            print ("filter is ", filter)
             os.system('mkdir -p {}'.format(output_full))
             for file in file_list:
 
               outfile='%s/%s'%(output_full,os.path.basename(file).replace('.root','_Skim.root'))
               if os.path.isfile(outfile) and not opt.force: continue
 
-#              condor.write('arguments = %s %s %s %s\n'%(prefix+file,'analysis_'+channel+sufix+yearmodified,output_full,filter))
               condor.write('arguments = %s %s %s\n'%(prefix+file,'analysis_'+channel+sufix+yearmodified,output_full))
               condor.write('queue 1\n')
 
@@ -100,8 +90,7 @@ def buildCondorFile(opt,FarmDirectory):
         worker.write('#!/bin/bash\n')
         worker.write('startMsg="Job started on "`date`\n')
         worker.write('echo $startMsg\n')
-        #worker.write('export HOME=%s\n'%os.environ['HOME']) #otherwise, 'dasgoclient' won't work on condor
-	worker.write('source /cvmfs/cms.cern.ch/cmsset_default.sh\n')
+        worker.write('source /cvmfs/cms.cern.ch/cmsset_default.sh\n')
         worker.write('export X509_USER_PROXY=%s\n'%os.environ['X509_USER_PROXY'])
         worker.write('########### INPUT SETTINGS ###########\n')
         worker.write('input=${1}\n')
@@ -151,7 +140,7 @@ def main():
     usage = 'usage: %prog [options]'
     parser = optparse.OptionParser(usage)
     parser.add_option('-i', '--in',     dest='input',  help='list of input datasets',    default='listSamplesMC2018.txt', type='string')
-    parser.add_option('-o', '--out',      dest='output',   help='output directory',  default='/eos/user/p/paffleck/BsTauTauAnalyzer/Output', type='string') #EDIT THIS
+    parser.add_option('-o', '--out',      dest='output',   help='output directory',  default='/eos/user/p/paffleck/FlattenerOutput', type='string') #EDIT THIS
     parser.add_option('-f', '--force',      dest='force',   help='force resubmission',  action='store_true')
     parser.add_option('-s', '--submit',   dest='submit',   help='submit jobs',       action='store_true')
     (opt, args) = parser.parse_args()
